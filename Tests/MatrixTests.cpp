@@ -10,6 +10,16 @@ bool WithinTolerance(const Vector& v1, const Vector& v2)
 	return d < TOLERANCE;
 }
 
+bool WithinTolerance(const Matrix& m1, const Matrix& m2)
+{
+	auto sum = 0.0;
+	for(int i = 0; i<16; i++)
+	{
+		sum += abs(m1._d[i] - m2._d[i]);
+	}
+	return sum < TOLERANCE;
+}
+
 void Identity()
 {
 	auto m = Matrix::Identity();
@@ -94,6 +104,12 @@ void Camera()
 
 	m = Matrix::Look( Vector(0.0, 10.0, 0.0), Vector(0.0, 0.0, 10.0));
 
+	auto e = Matrix(1.0, 0.0, 0.0, 0.0,
+		            0.0, sqrt(2.0) / 2.0, sqrt(2.0) / 2.0, 10.0,
+					0.0, -sqrt(2.0) / 2.0, sqrt(2.0) / 2.0, 0.0,
+					0.0, 0.0, 0.0, 1.0);
+
+	assert(WithinTolerance(m,e));
 }
 
 void MatrixTests()
