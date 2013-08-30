@@ -7,20 +7,11 @@ template<typename T>
 class Vec4
 {
 public:
+	Vec4(const Vec4<T>& v) : x(v.x), y(v.y), z(v.z), w(v.w) {}
 	Vec4(T x, T y, T z, T w = 1) : x(x), y(y), z(z), w(w) {}
 	Vec4(void) : x(0), y(0), z(0), w(1) {}
-
+	~Vec4() {}
 	const T x, y, z, w;
-
-	Vec4<T> operator*(T m)
-	{
-		return Vec4<T>(x*m, y*m, z*m, w);
-	}
-
-	Vec4<T> operator+(const Vec4<T>& v)
-	{
-		return Vec4<T>(x + v.x, y + v.y, z + v.z, w); 
-	}
 
 	T DotProduct(const Vec4<T>& rhs) const
 	{
@@ -65,5 +56,17 @@ public:
 		return x == rhs.x && y == rhs.y && z == rhs.z && w == rhs.w;
 	}
 };
+
+template<typename T>
+Vec4<T> operator*(const Vec4<T> &v, const T& m)
+{
+	return Vec4<T>(v.x*m, v.y*m, v.z*m, v.w);
+}
+
+template<typename T>
+Vec4<T> operator+(const Vec4<T>& lhs, const Vec4<T>& rhs)
+{
+	return Vec4<T>(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z, lhs.w);
+}
 
 typedef Vec4<decimal> Vector;

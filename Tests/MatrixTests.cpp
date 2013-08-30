@@ -117,7 +117,7 @@ void CameraTransform()
 	auto m = Matrix::Look(Vector(0,0,-10), Vector(0,0,0));
 	auto v = Vector(0,0,0);
 	auto v2 = m.Multiply(v);
-	assert(WithinTolerance(v2, Vector(0,0,10)));
+	assert(WithinTolerance(v2, Vector(0,0,-10)));
 }
 
 void MatrixMultipliedByInverseIsIdentity()

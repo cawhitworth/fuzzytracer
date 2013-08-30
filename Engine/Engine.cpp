@@ -26,7 +26,10 @@ bool Engine::TraceRay( const Vector& origin, const Vector& direction, std::share
 	if (minObj != NULL)
 	{
 		hit = minObj;
-		point.reset(new Vector());
+		const Vector* v = new Vector(origin + (direction * minT));
+
+		point.reset(v);
+
 		return true;
 	}
 	return false;
