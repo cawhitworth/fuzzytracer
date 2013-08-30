@@ -1,6 +1,7 @@
 #pragma once
 
 #include <math.h>
+#include "Utilities.h"
 
 template<typename T>
 class Vec4
@@ -55,4 +56,4 @@ public:
 	}
 };
 
-typedef Vec4<double> Vector;
+typedef Vec4<decimal> Vector;

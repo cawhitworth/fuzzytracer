@@ -5,6 +5,6 @@
 
 class IWorldObject
 {
-	virtual const Matrix& GetObjectMatrix() = 0;
+	virtual const Matrix& GetObjectMatrix() const = 0;
 	virtual void SetObjectMatrix(const Matrix&) = 0;
 };

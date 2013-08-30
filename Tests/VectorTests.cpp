@@ -3,7 +3,7 @@
 
 #define TOLERANCE 0.001
 
-void CheckLength(double x, double y, double z, double length)
+void CheckLength(decimal x, decimal y, decimal z, decimal length)
 {
 	Vector v(x, y, z);
 	assert(abs(length - v.Magnitude()) < TOLERANCE);

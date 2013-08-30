@@ -112,6 +112,19 @@ void Camera()
 	assert(WithinTolerance(m,e));
 }
 
+void MatrixMultipliedByInverseIsIdentity()
+{
+	auto m =      Matrix::RotationX(DEG2RAD(45))
+		.Multiply(Matrix::RotationY(DEG2RAD(30)))
+		.Multiply(Matrix::Translate(Vector(3.0, 4.0, 5.0)));
+
+	auto i = m.Inverse();
+
+	auto m2 = m.Multiply(i);
+
+	assert( WithinTolerance(m2, Matrix::Identity()));
+}
+
 void MatrixTests()
 {
 	Identity();
@@ -123,6 +136,8 @@ void MatrixTests()
 
 	RotationOfUnitVectorInXBy90DegreesAroundYAxisGivesUnitVectorInZ();
 	RotationOfUnitVectorInYBy90DegreesAroundZAxisGivesUnitVectorInX();
+
+	MatrixMultipliedByInverseIsIdentity();
 
 	Camera();
 }

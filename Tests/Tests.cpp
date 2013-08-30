@@ -4,11 +4,13 @@
 #include "stdafx.h"
 #include "VectorTests.h"
 #include "MatrixTests.h"
+#include "SphereTests.h"
 
 int _tmain(int argc, _TCHAR* argv[])
 {
 	VectorTests();
 	MatrixTests();
+	SphereTests();
 	return 0;
 }
 
