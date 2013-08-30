@@ -28,5 +28,6 @@ public:
 private:
 	decimal m_radius;
 	std::shared_ptr<Matrix> m_objectMatrix;
+	std::shared_ptr<Matrix> m_objectMatrixInverse;
 };
 
