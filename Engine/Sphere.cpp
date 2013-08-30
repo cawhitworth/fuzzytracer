@@ -5,12 +5,14 @@
 Sphere::Sphere(void)
 {
 	m_objectMatrix.reset(new Matrix(Matrix::Identity()));
+	m_objectMatrixInverse.reset(new Matrix(Matrix::Identity()));
 }
 
 
 Sphere::~Sphere(void)
 {
 	m_objectMatrix.reset();
+	m_objectMatrixInverse.reset();
 }
 
 const Matrix& Sphere::GetObjectMatrix() const
@@ -21,14 +23,18 @@ const Matrix& Sphere::GetObjectMatrix() const
 void Sphere::SetObjectMatrix( const Matrix& position )
 {
 	m_objectMatrix.reset(new Matrix(position));
+	m_objectMatrixInverse.reset(new Matrix(position.Inverse()));
 }
 
 bool Sphere::Intersect( const Vector& rayOrigin, const Vector& rayDirection, decimal& t ) const
 {
+	auto transformedOrigin = m_objectMatrixInverse->Multiply(rayOrigin);
+	auto transformedDirection = m_objectMatrixInverse->Multiply(rayDirection);
+
 	// compute a,b,c
-	decimal a = rayDirection.DotProduct(rayDirection);
-	decimal b = 2 * rayDirection.DotProduct(rayOrigin);
-	decimal c = rayOrigin.DotProduct(rayOrigin) - 1.0;
+	decimal a = transformedDirection.DotProduct(transformedDirection);
+	decimal b = 2 * transformedDirection.DotProduct(transformedOrigin);
+	decimal c = transformedOrigin.DotProduct(transformedOrigin) - 1.0;
 
 	// b^2 - 4ac
 	decimal discriminant = (b * b) - (4 * a * c);

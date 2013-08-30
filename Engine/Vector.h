@@ -10,7 +10,7 @@ public:
 	Vec4(const Vec4<T>& v) : x(v.x), y(v.y), z(v.z), w(v.w) {}
 	Vec4(T x, T y, T z, T w = 1) : x(x), y(y), z(z), w(w) {}
 	Vec4(void) : x(0), y(0), z(0), w(1) {}
-	~Vec4() {}
+
 	const T x, y, z, w;
 
 	T DotProduct(const Vec4<T>& rhs) const
