@@ -98,6 +98,15 @@ public:
 		return m;
 	}
 
+	static Mat4<T> Scale(const Vec4<T>& vec)
+	{
+		Mat4<T> m = Identity();
+		m._11 = vec.x;
+		m._22 = vec.y;
+		m._33 = vec.z;
+		return m;
+	}
+
 	static Mat4<T> Camera(const Vec4<T>& forward, const Vec4<T>& right, const Vec4<T>& up, const Vec4<T>& position)
 	{
 		auto m = Identity();

@@ -11,10 +11,6 @@ public:
 	Sphere(void);
 	virtual ~Sphere(void);
 
-	// Sphere
-	const decimal GetRadius() const { return m_radius; }
-	void SetRadius(const decimal r) { m_radius = r; }
-
 	// IPositionable
 	
 	const Matrix& GetObjectMatrix() const;
@@ -26,7 +22,6 @@ public:
 	Vector Normal(const Vector& intersectPoint) const;
 
 private:
-	decimal m_radius;
 	std::shared_ptr<Matrix> m_objectMatrix;
 	std::shared_ptr<Matrix> m_objectMatrixInverse;
 };

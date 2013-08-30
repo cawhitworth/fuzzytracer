@@ -112,6 +112,14 @@ void Camera()
 	assert(WithinTolerance(m,e));
 }
 
+void CameraTransform()
+{
+	auto m = Matrix::Look(Vector(0,0,-10), Vector(0,0,0));
+	auto v = Vector(0,0,0);
+	auto v2 = m.Multiply(v);
+	assert(WithinTolerance(v2, Vector(0,0,10)));
+}
+
 void MatrixMultipliedByInverseIsIdentity()
 {
 	auto m =      Matrix::RotationX(DEG2RAD(45))
@@ -123,6 +131,28 @@ void MatrixMultipliedByInverseIsIdentity()
 	auto m2 = m.Multiply(i);
 
 	assert( WithinTolerance(m2, Matrix::Identity()));
+}
+
+void ScaleVector()
+{
+	auto m = Matrix::Scale(Vector(2,3,4));
+	auto v = Vector(1,1,1);
+	auto v2 = m.Multiply(v);
+	assert(v2 == Vector(2,3,4));
+}
+
+void SequenceOfOperations()
+{
+	auto m =		  Matrix::Scale(Vector(2,3,4))
+			.Multiply(Matrix::RotationZ(DEG2RAD(90)))
+			.Multiply(Matrix::Translate(Vector(1,0,0)));
+
+	auto v = Vector(0,0,0,1);
+
+	auto v2 = m.Multiply(v);
+ 	assert(WithinTolerance(v2,Vector(0, 3, 0)));
+
+
 }
 
 void MatrixTests()
@@ -140,4 +170,7 @@ void MatrixTests()
 	MatrixMultipliedByInverseIsIdentity();
 
 	Camera();
+	CameraTransform();
+	ScaleVector();
+	SequenceOfOperations();
 }

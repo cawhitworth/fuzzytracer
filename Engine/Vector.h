@@ -12,6 +12,16 @@ public:
 
 	const T x, y, z, w;
 
+	Vec4<T> operator*(T m)
+	{
+		return Vec4<T>(x*m, y*m, z*m, w);
+	}
+
+	Vec4<T> operator+(const Vec4<T>& v)
+	{
+		return Vec4<T>(x + v.x, y + v.y, z + v.z, w); 
+	}
+
 	T DotProduct(const Vec4<T>& rhs) const
 	{
 		return (x * rhs.x) + (y * rhs.y) + (z * rhs.z);

@@ -28,7 +28,7 @@ bool Sphere::Intersect( const Vector& rayOrigin, const Vector& rayDirection, dec
 	// compute a,b,c
 	decimal a = rayDirection.DotProduct(rayDirection);
 	decimal b = 2 * rayDirection.DotProduct(rayOrigin);
-	decimal c = rayOrigin.DotProduct(rayOrigin) - (m_radius * m_radius);
+	decimal c = rayOrigin.DotProduct(rayOrigin) - 1.0;
 
 	// b^2 - 4ac
 	decimal discriminant = (b * b) - (4 * a * c);
@@ -63,5 +63,5 @@ bool Sphere::Intersect( const Vector& rayOrigin, const Vector& rayDirection, dec
 
 Vector Sphere::Normal( const Vector& intersectPoint ) const
 {
-	return Vector();
+	return Vector(intersectPoint.x, intersectPoint.y, intersectPoint.z, 0).Normalised();
 }
