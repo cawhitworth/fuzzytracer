@@ -3,7 +3,7 @@
 #include "Vector.h"
 #include "Matrix.h"
 
-#define TOLERANCE 0.001
+#define TOLERANCE 0.0000001
 
 bool WithinTolerance(decimal d1, decimal d2);
 
