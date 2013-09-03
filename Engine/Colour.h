@@ -3,6 +3,8 @@
 #include <vector>
 #include "Utilities.h"
 
+#define CLAMP(x) ( (x < 0) ? 0 : ( (x > 1) ? 1 : x ) )
+
 template<typename T>
 class Col
 {
@@ -18,6 +20,11 @@ public:
 		return Col<T>(r * scale, g * scale, b * scale);
 	}
 
+	const Col<T> Clamp() const
+	{
+		return Col<T>(CLAMP(r), CLAMP(g), CLAMP(b));
+	}
+
 	const T Luminance() const
 	{
 		return (r + g + b) / 3.0;
@@ -30,6 +37,9 @@ public:
 template<typename T>
 const Col<T> Col<T>::Average(std::vector<const Col<T> > cols)
 {
+	if (cols.size() == 1)
+		return cols[0];
+
 	int i = 0;
 	T r = 0,g = 0,b = 0;
 	for(auto c : cols)

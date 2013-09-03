@@ -21,7 +21,7 @@ public:
 
 private:
 	std::shared_ptr<const Matrix> m_objectMatrix;
-	std::shared_ptr<const Vector> m_point;
+	std::vector<const Vector> m_point;
 
 };
 

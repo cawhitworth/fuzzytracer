@@ -9,7 +9,7 @@ void Engine::SetViewMatrix(const Matrix& view)
 	m_View.reset(new Matrix(view));
 }
 
-void Engine::TraceScene()
+void Engine::TraceScene(std::ostream& output)
 {
 	decimal distance = 1.0 / (tan(hFov / 2.0));
 
@@ -35,17 +35,19 @@ void Engine::TraceScene()
 
 			if (i)
 			{
-				Colour c = Illuminate(*hit, *v);
+				Colour c = Illuminate(*hit, *v).Clamp();
 
-				decimal l = c.Luminance();
-				std::cout << ( (l < 0.25) ? "." : (l < 0.75) ? "O" : "*" );
+				output << (char)(c.r * 255);
+				output << (char)(c.g * 255);
+				output << (char)(c.b * 255);
 			}
 			else
 			{
-				std::cout << ".";
+				output << '\0';
+				output << '\0';
+				output << '\0';
 			}
 		}
-		std::cout << std::endl;
 	}
 }
 
@@ -92,20 +94,27 @@ const Colour Engine::Illuminate(const IIntersectable& hitObject, const Vector& p
 {
 	std::vector<const Colour> colours;
 
+	decimal diffuse = 0.7, ambient = 0.3;
+
 	std::shared_ptr<const IIntersectable> shadowObject;
 	std::shared_ptr<const Vector> shadowPoint;
 	for(auto l : m_lights)
 	{
 		for(auto s : l->Samples())
 		{
-			Vector direction = point.Direction(s);
-			if (!TraceRay(point, direction, shadowObject, shadowPoint))
+			auto direction = s.Direction(point).Normalised();
+			auto shadow = TraceRay(s, direction, shadowObject, shadowPoint);
+
+			if (!shadow || (shadow && shadowObject.get() == &hitObject))
 			{
-				Vector normal = hitObject.Normal(point);
+				auto normal = hitObject.Normal(point);
+				auto flippedDirection = direction * -1.0;
 
-				decimal cosTheta = direction.DotProduct(normal);
+				auto cosTheta = flippedDirection.DotProduct(normal);
 
-				auto c = hitObject.ColourAt(point).Multiply(cosTheta);
+				auto lightingComponent = (cosTheta * diffuse) + ambient;
+
+				auto c = hitObject.ColourAt(point).Multiply(lightingComponent).Clamp();
 
 				colours.push_back(c);
 			}

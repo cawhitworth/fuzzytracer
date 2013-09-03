@@ -15,7 +15,7 @@ public:
 	decimal hFov;
 
 	void SetViewMatrix(const Matrix&);
-	void TraceScene();
+	void TraceScene(std::ostream&);
 
 	void AddObject(std::shared_ptr<const IIntersectable> object);
 	void AddLight(std::shared_ptr<const ILight> light);

@@ -4,6 +4,7 @@
 #include "Sphere.h"
 #include "TestHelpers.h"
 #include "EngineTests.h"
+#include "PointLight.h"
 
 void EmptySceneHasNoHit()
 {
@@ -52,9 +53,35 @@ void CanHitTransformedSphere()
 	assert(WithinTolerance(*v, Vector(0,5,-5)));
 }
 
+void CanIlluminate()
+{
+	Engine e;
+	std::shared_ptr<Sphere> sphere(new Sphere());
+	sphere->SetColour(Colour(1.0, 1.0, 1.0));
+	e.AddObject(sphere);
+
+	std::shared_ptr<PointLight> light(new PointLight());
+	light->SetObjectMatrix(
+		Matrix::Translate(Vector(0, 10, -10))
+		);
+
+	e.AddLight(light);
+
+	std::shared_ptr<const IIntersectable> hit;
+	std::shared_ptr<const Vector> v;
+
+	assert(e.TraceRay(Vector(0,0,-10), Vector(0,0,1,0), hit, v));
+
+	auto c = e.Illuminate(*hit, *v);
+
+	assert(c.Luminance() == 1.0);
+
+};
+
 void EngineTests()
 {
 	EmptySceneHasNoHit();
 	CanHitASphere();
 	CanHitTransformedSphere();
+	CanIlluminate();
 }

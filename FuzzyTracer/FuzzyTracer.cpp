@@ -3,36 +3,40 @@
 
 #include "stdafx.h"
 #include <memory>
+#include <fstream>
 #include "Utilities.h"
 #include "Engine.h"
 #include "Sphere.h"
 #include "PointLight.h"
 
 int _tmain(int argc, _TCHAR* argv[])
-{
+ {
 	Engine e;
-	Matrix view = Matrix::Look( Vector(0, 5, -10), Vector(0, 0, 1, 0));
+	Matrix view = Matrix::Look( Vector(0, 0, -10), Vector(0, 0, 1, 0));
 	e.SetViewMatrix(view);
 
-	std::shared_ptr<Sphere> sphere(new Sphere());
-	sphere->SetObjectMatrix( 
-		Matrix::Translate(Vector(0, 5, 0)).Multiply(
-		Matrix::Scale(Vector(5,5,5)))
-		
-	);
-	sphere->SetColour(Colour(1, 1, 1));
-	e.AddObject(sphere);
-
+	for(decimal x = -10; x <=10; x +=2)
+	{
+		for(decimal y = -10; y <=10; y +=2)
+		{
+			std::shared_ptr<Sphere> sphere(new Sphere());
+			sphere->SetObjectMatrix( Matrix::Translate(Vector(x, y, 0)));
+			sphere->SetColour(Colour(1, 1, 1));
+			e.AddObject(sphere);
+		}
+	}
 	std::shared_ptr<PointLight> light(new PointLight());
 	light->SetObjectMatrix(
-		Matrix::Translate(Vector(0, 20, -40))
+		Matrix::Translate(Vector(0, 200, -200))
 		);
 	e.AddLight(light);
 
-	e.Height = 80;
-	e.Width = 80;
+	e.Width = 640;
+	e.Height = 480;
 	e.hFov = DEG2RAD(90);
-	e.TraceScene();
+
+	std::ofstream output("C:\\projects\\output.raw", std::ios_base::binary);
+	e.TraceScene(output);
 
 	return 0;
 }
