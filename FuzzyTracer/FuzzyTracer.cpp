@@ -6,6 +6,7 @@
 #include "Utilities.h"
 #include "Engine.h"
 #include "Sphere.h"
+#include "PointLight.h"
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -19,7 +20,14 @@ int _tmain(int argc, _TCHAR* argv[])
 		Matrix::Scale(Vector(5,5,5)))
 		
 	);
+	sphere->SetColour(Colour(1, 1, 1));
 	e.AddObject(sphere);
+
+	std::shared_ptr<PointLight> light(new PointLight());
+	light->SetObjectMatrix(
+		Matrix::Translate(Vector(0, 20, -40))
+		);
+	e.AddLight(light);
 
 	e.Height = 80;
 	e.Width = 80;

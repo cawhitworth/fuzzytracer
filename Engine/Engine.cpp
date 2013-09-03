@@ -2,6 +2,7 @@
 #include "Engine.h"
 #include <math.h>
 #include <iostream>
+#include <vector>
 
 void Engine::SetViewMatrix(const Matrix& view)
 {
@@ -31,7 +32,18 @@ void Engine::TraceScene()
 			Vector worldDirection = m_View->Multiply(direction);
 
 			bool i = TraceRay(worldOrigin, worldDirection, hit, v);
-			std::cout << (i ? "*" : ".");
+
+			if (i)
+			{
+				Colour c = Illuminate(*hit, *v);
+
+				decimal l = c.Luminance();
+				std::cout << ( (l < 0.25) ? "." : (l < 0.75) ? "O" : "*" );
+			}
+			else
+			{
+				std::cout << ".";
+			}
 		}
 		std::cout << std::endl;
 	}
@@ -42,7 +54,12 @@ void Engine::AddObject(std::shared_ptr<const IIntersectable> object)
 	m_objects.push_back(object);
 }
 
-bool Engine::TraceRay( const Vector& origin, const Vector& direction, std::shared_ptr<const IIntersectable>& hit, std::shared_ptr<const Vector>& point)
+void Engine::AddLight(std::shared_ptr<const ILight> light)
+{
+	m_lights.push_back(light);
+}
+
+bool Engine::TraceRay( const Vector& origin, const Vector& direction, std::shared_ptr<const IIntersectable>& hit, std::shared_ptr<const Vector>& point) const
 {
 	std::shared_ptr<const IIntersectable> minObj;
 	decimal minT = 0;
@@ -69,4 +86,31 @@ bool Engine::TraceRay( const Vector& origin, const Vector& direction, std::share
 		return true;
 	}
 	return false;
+}
+
+const Colour Engine::Illuminate(const IIntersectable& hitObject, const Vector& point) const
+{
+	std::vector<const Colour> colours;
+
+	std::shared_ptr<const IIntersectable> shadowObject;
+	std::shared_ptr<const Vector> shadowPoint;
+	for(auto l : m_lights)
+	{
+		for(auto s : l->Samples())
+		{
+			Vector direction = point.Direction(s);
+			if (!TraceRay(point, direction, shadowObject, shadowPoint))
+			{
+				Vector normal = hitObject.Normal(point);
+
+				decimal cosTheta = direction.DotProduct(normal);
+
+				auto c = hitObject.ColourAt(point).Multiply(cosTheta);
+
+				colours.push_back(c);
+			}
+		}
+	}
+
+	return Colour::Average(colours);
 }
