@@ -121,20 +121,24 @@ bool Engine::TraceRay( const Vector& origin, const Vector& direction, std::share
 
 const Colour Engine::Illuminate(const IIntersectable& hitObject, const Vector& point) const
 {
-	std::vector<const Colour> colours;
 
 	decimal diffuse = 0.7, ambient = 0.3;
 
 	std::shared_ptr<const IIntersectable> shadowObject;
 	std::shared_ptr<const Vector> shadowPoint;
+
+	auto pointColour = hitObject.ColourAt(point);
+
+	auto ambientColour = Colour(ambient, ambient, ambient).Multiply(pointColour);
+	std::shared_ptr<const Colour> diffuseColour(new Colour(0,0,0));
+
 	for(auto l : m_lights)
 	{
+		std::vector<const Colour> diffuseColours;
 		for(auto s : l->Samples())
 		{
 			auto direction = s.Direction(point).Normalised();
 			auto shadow = TraceRay(s, direction, shadowObject, shadowPoint);
-
-			decimal lightingComponent = ambient;
 
 			if (!shadow || (shadow && shadowObject.get() == &hitObject))
 			{
@@ -143,14 +147,19 @@ const Colour Engine::Illuminate(const IIntersectable& hitObject, const Vector& p
 
 				auto cosTheta = flippedDirection.DotProduct(normal);
 
-				lightingComponent += CLAMP(cosTheta * diffuse);
+				auto power = CLAMP(cosTheta * diffuse);
 
+				auto diffuseColour = l->GetColour().Multiply(power);
+
+				auto c = pointColour.Multiply(diffuseColour).Clamp();
+
+				diffuseColours.push_back(c);
 			}
-
-			auto c = hitObject.ColourAt(point).Multiply(lightingComponent).Clamp();
-			colours.push_back(c);
+			else
+				diffuseColours.push_back(Colour(0,0,0));
 		}
+		diffuseColour.reset(new Colour(*diffuseColour + Colour::Average(diffuseColours)));
 	}
 
-	return Colour::Average(colours);
+	return *diffuseColour + ambientColour;
 }

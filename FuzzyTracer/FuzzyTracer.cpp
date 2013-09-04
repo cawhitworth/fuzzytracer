@@ -38,7 +38,17 @@ int _tmain(int argc, _TCHAR* argv[])
 		Matrix::Translate(Vector(-20, 200, -20)).Multiply(
 		Matrix::Scale(Vector(8, 0, 8)))
 		);
+	light->SetColour(Colour(1.0, 0.5, 0.5));
 	e.AddLight(light);
+
+	std::shared_ptr<AreaLight> light2(new AreaLight(3,3));
+
+	light2->SetObjectMatrix(
+		Matrix::Translate(Vector(20, 200, -20)).Multiply(
+		Matrix::Scale(Vector(8, 0, 8)))
+		);
+	light2->SetColour(Colour(0.5, 1.0, 0.5));
+	e.AddLight(light2);
 
 
 	e.Width = 640;

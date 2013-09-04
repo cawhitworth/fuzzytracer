@@ -15,6 +15,11 @@ public:
 	Col<T>(T r, T g, T b) : r(r), g(g), b(b) {}
 	Col<T>(const Col<T>& rhs) : r(rhs.r), g(rhs.g), b(rhs.b) {}
 
+	const Col<T> Multiply(const Col<T>& col) const
+	{
+		return Col<T>(r * col.r, g * col.g, b * col.b);
+	}
+
 	const Col<T> Multiply(T scale) const
 	{
 		return Col<T>(r * scale, g * scale, b * scale);
@@ -33,6 +38,12 @@ public:
 	static const Col<T> Average(std::vector<const Col<T> > cols);
 
 };
+
+template<typename T>
+const Col<T> operator+(const Col<T>& lhs, const Col<T>& rhs)
+{
+	return Col<T>(lhs.r + rhs.r, lhs.g + rhs.g, lhs.b + rhs.b).Clamp();
+}
 
 template<typename T>
 const Col<T> Col<T>::Average(std::vector<const Col<T> > cols)
