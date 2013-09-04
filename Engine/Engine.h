@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <vector>
 #include <memory>
 #include "Vector.h"
@@ -18,7 +19,7 @@ public:
 	Engine() : Oversample(4), Width(640), Height(480), HFov(90) {}
 
 	void SetViewMatrix(const Matrix&);
-	void TraceScene(std::ostream&);
+	void TraceScene(std::ostream&, std::function<void (decimal)> callback);
 
 	void AddObject(std::shared_ptr<const IIntersectable> object);
 	void AddLight(std::shared_ptr<const ILight> light);

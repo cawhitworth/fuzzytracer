@@ -9,7 +9,7 @@ void Engine::SetViewMatrix(const Matrix& view)
 	m_View.reset(new Matrix(view));
 }
 
-void Engine::TraceScene(std::ostream& output)
+void Engine::TraceScene(std::ostream& output, std::function<void (decimal)> callback)
 {
 	decimal distance = 1.0 / (tan(HFov / 2.0));
 
@@ -23,6 +23,8 @@ void Engine::TraceScene(std::ostream& output)
 
 	for(int pixelY = 0; pixelY < Height; pixelY++)
 	{
+		callback( decimal(pixelY * 100) / Height);
+
 		decimal y = 1 - pixelY * yScale;
 
 		for(int pixelX = 0; pixelX < Width; pixelX++)
