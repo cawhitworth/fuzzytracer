@@ -11,8 +11,11 @@
 class Engine
 {
 public:
+	unsigned int Oversample;
 	unsigned int Width, Height;
-	decimal hFov;
+	decimal HFov;
+
+	Engine() : Oversample(4), Width(640), Height(480), HFov(90) {}
 
 	void SetViewMatrix(const Matrix&);
 	void TraceScene(std::ostream&);

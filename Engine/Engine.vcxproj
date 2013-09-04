@@ -74,6 +74,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AreaLight.h" />
     <ClInclude Include="Colour.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="IIntersectable.h" />
@@ -88,6 +89,7 @@
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AreaLight.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Sphere.cpp" />

@@ -46,7 +46,9 @@ void CanHitTransformedSphere()
 	std::shared_ptr<const IIntersectable> hit;
 	std::shared_ptr<const Vector> v;
 
-	assert(e.TraceRay(Vector(0,5,-10), Vector(0,0,1,0), hit, v));
+	bool i = e.TraceRay(Vector(0,5,-10), Vector(0,0,1,0), hit, v);
+
+	assert(i);
 
 	assert(hit == sphere);
 
@@ -71,7 +73,9 @@ void CanIlluminate()
 	std::shared_ptr<const IIntersectable> hit;
 	std::shared_ptr<const Vector> v;
 
-	assert(e.TraceRay(Vector(0,0,-10), Vector(0,0,1,0), hit, v));
+	bool i = e.TraceRay(Vector(0,0,-10), Vector(0,0,1,0), hit, v);
+
+	assert(i);
 
 	auto c = e.Illuminate(*hit, *v);
 

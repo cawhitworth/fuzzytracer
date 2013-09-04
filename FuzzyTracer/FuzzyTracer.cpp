@@ -7,6 +7,7 @@
 #include "Utilities.h"
 #include "Engine.h"
 #include "Sphere.h"
+#include "AreaLight.h"
 #include "PointLight.h"
 
 int _tmain(int argc, _TCHAR* argv[])
@@ -25,15 +26,20 @@ int _tmain(int argc, _TCHAR* argv[])
 		}
 	}
 
-	std::shared_ptr<PointLight> light(new PointLight());
+	/*std::shared_ptr<PointLight> light(new PointLight()); */
+
+	std::shared_ptr<AreaLight> light(new AreaLight(3,3));
 	light->SetObjectMatrix(
-		Matrix::Translate(Vector(-20, 200, -20))
+		Matrix::Translate(Vector(-20, 200, -20)).Multiply(
+		Matrix::Scale(Vector(5, 0, 5)))
 		);
 	e.AddLight(light);
 
+
 	e.Width = 640;
 	e.Height = 480;
-	e.hFov = DEG2RAD(90);
+	e.HFov = DEG2RAD(90);
+	e.Oversample = 4;
 
 	std::ofstream output("output.data", std::ios_base::binary);
 	e.TraceScene(output);
