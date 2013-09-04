@@ -44,7 +44,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	e.Width = 640;
 	e.Height = 480;
 	e.HFov = DEG2RAD(90);
-	e.Oversample = 16;
+	e.Oversample = 0;
 
 	std::ofstream output("output.data", std::ios_base::binary);
 	e.TraceScene(output, [](decimal p) { std::cout << p << "%" << std::endl; } );

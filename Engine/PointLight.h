@@ -14,14 +14,16 @@ public:
 	PointLight(void);
 	virtual ~PointLight(void);
 
-	virtual const Matrix& GetObjectMatrix() const;
-	virtual void SetObjectMatrix(const Matrix&);
+	 const Matrix& GetObjectMatrix() const;
+	 void SetObjectMatrix(const Matrix&);
 
-	virtual std::vector<const Vector> Samples() const;
+	void SetColour(const Colour& col) { m_colour.reset(new Colour(col)); }
+	const Colour& GetColour() const { return *m_colour; }
+	std::vector<const Vector> Samples() const;
 
 private:
 	std::shared_ptr<const Matrix> m_objectMatrix;
 	std::vector<const Vector> m_point;
-
+	std::shared_ptr<const Colour> m_colour;
 };
 

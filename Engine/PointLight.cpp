@@ -6,10 +6,12 @@ PointLight::PointLight(void)
 {
 	m_objectMatrix.reset(new Matrix(Matrix::Identity()));
 	m_point.push_back(Vector(0,0,0));
+	m_colour.reset(new Colour(1,1,1));
 }
 
 PointLight::~PointLight(void)
 {
+	m_colour.reset();
 	m_objectMatrix.reset();
 }
 

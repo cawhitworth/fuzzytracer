@@ -2,15 +2,18 @@
 #include "AreaLight.h"
 #include <math.h>
 
+AreaLight::AreaLight( unsigned int w, unsigned int h, decimal fuzz) : m_w(w), m_h(h), m_fuzz(fuzz)
+{
+	m_colour.reset(new Colour(1,1,1));
+	m_objectMatrix.reset(new Matrix(Matrix::Identity()));
+}
+
 AreaLight::~AreaLight( void )
 {
 	m_objectMatrix.reset();
+	m_colour.reset();
 }
 
-AreaLight::AreaLight( unsigned int w, unsigned int h, decimal fuzz) : m_w(w), m_h(h), m_fuzz(fuzz)
-{
-	m_objectMatrix.reset(new Matrix(Matrix::Identity()));
-}
 
 const Matrix& AreaLight::GetObjectMatrix() const
 {

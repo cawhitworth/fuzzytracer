@@ -14,15 +14,17 @@ public:
 
 	virtual ~AreaLight(void);
 
-	virtual const Matrix& GetObjectMatrix() const;
+	const Matrix& GetObjectMatrix() const;
+	void SetObjectMatrix(const Matrix& m);
 
-	virtual void SetObjectMatrix(const Matrix& m);
-
-	virtual std::vector<const Vector> Samples() const;
+	void SetColour(const Colour& col) { m_colour.reset(new Colour(col)); }
+	const Colour& GetColour() const { return *m_colour; }
+	std::vector<const Vector> Samples() const;
 
 private:
 	const decimal m_fuzz;
 	const unsigned int m_w, m_h;
 	std::shared_ptr<const Matrix> m_objectMatrix;
+	std::shared_ptr<const Colour> m_colour;
 };
 
