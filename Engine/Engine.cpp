@@ -105,6 +105,8 @@ const Colour Engine::Illuminate(const IIntersectable& hitObject, const Vector& p
 			auto direction = s.Direction(point).Normalised();
 			auto shadow = TraceRay(s, direction, shadowObject, shadowPoint);
 
+			decimal lightingComponent = ambient;
+
 			if (!shadow || (shadow && shadowObject.get() == &hitObject))
 			{
 				auto normal = hitObject.Normal(point);
@@ -112,12 +114,12 @@ const Colour Engine::Illuminate(const IIntersectable& hitObject, const Vector& p
 
 				auto cosTheta = flippedDirection.DotProduct(normal);
 
-				auto lightingComponent = (cosTheta * diffuse) + ambient;
+				lightingComponent += CLAMP(cosTheta * diffuse);
 
-				auto c = hitObject.ColourAt(point).Multiply(lightingComponent).Clamp();
-
-				colours.push_back(c);
 			}
+
+			auto c = hitObject.ColourAt(point).Multiply(lightingComponent).Clamp();
+			colours.push_back(c);
 		}
 	}
 

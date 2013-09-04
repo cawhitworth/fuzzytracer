@@ -14,15 +14,20 @@ int _tmain(int argc, _TCHAR* argv[])
 	Engine e;
 	Matrix view = Matrix::Look( Vector(0, 0, -2.5), Vector(0, 0, 1, 0));
 	e.SetViewMatrix(view);
-
-	std::shared_ptr<Sphere> sphere(new Sphere());
-	sphere->SetObjectMatrix( Matrix::Translate(Vector(0, -1, 0)));
-	sphere->SetColour(Colour(1, 1, 1));
-	e.AddObject(sphere);
+	for(decimal y = -4; y <= 4; y+=2)
+	{
+		for(decimal x = -4; x <= 4; x+=2)
+		{
+			std::shared_ptr<Sphere> sphere(new Sphere());
+			sphere->SetObjectMatrix( Matrix::Translate(Vector(x, y, 0)));
+			sphere->SetColour(Colour(1, 1, 1));
+			e.AddObject(sphere);
+		}
+	}
 
 	std::shared_ptr<PointLight> light(new PointLight());
 	light->SetObjectMatrix(
-		Matrix::Translate(Vector(0, -1, -200))
+		Matrix::Translate(Vector(-20, 200, -20))
 		);
 	e.AddLight(light);
 
