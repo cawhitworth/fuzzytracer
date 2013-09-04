@@ -10,7 +10,7 @@ class AreaLight :
 	public ILight, public IWorldObject
 {
 public:
-	AreaLight(unsigned int w = 3, unsigned int h = 3, decimal fuzz = 0);
+	AreaLight(unsigned int w = 3, unsigned int h = 3, decimal fuzz = 1);
 
 	virtual ~AreaLight(void);
 

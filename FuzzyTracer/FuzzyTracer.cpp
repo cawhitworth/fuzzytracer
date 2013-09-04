@@ -31,7 +31,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	std::shared_ptr<AreaLight> light(new AreaLight(3,3));
 	light->SetObjectMatrix(
 		Matrix::Translate(Vector(-20, 200, -20)).Multiply(
-		Matrix::Scale(Vector(5, 0, 5)))
+		Matrix::Scale(Vector(2, 0, 2)))
 		);
 	e.AddLight(light);
 
@@ -39,7 +39,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	e.Width = 640;
 	e.Height = 480;
 	e.HFov = DEG2RAD(90);
-	e.Oversample = 4;
+	e.Oversample = 0;
 
 	std::ofstream output("output.data", std::ios_base::binary);
 	e.TraceScene(output);

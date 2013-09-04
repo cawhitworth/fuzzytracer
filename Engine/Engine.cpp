@@ -16,9 +16,6 @@ void Engine::TraceScene(std::ostream& output)
 	Vector origin(0, 0, -distance);
 	Vector worldOrigin = m_View->Multiply(origin);
 
-	std::shared_ptr<const IIntersectable> hit;
-	std::shared_ptr<const Vector> v;
-
 	std::vector<const Colour> cols;
 
 	decimal yScale = decimal(2) / (Height - 1);
@@ -31,35 +28,53 @@ void Engine::TraceScene(std::ostream& output)
 		for(int pixelX = 0; pixelX < Width; pixelX++)
 		{
 			decimal x = -1 + pixelX * xScale;
-			cols.clear();
-			for(int i = 0; i < Oversample; i ++)
+			if (Oversample > 0)
 			{
-				decimal xOff = (-0.5 + decimal(rand()) / RAND_MAX) * xScale;
-				decimal yOff = (-0.5 + decimal(rand()) / RAND_MAX) * yScale;
-
-				Vector target(x + xOff, y + yOff, 0);
-				Vector direction = origin.Direction(target);
-
-				Vector worldDirection = m_View->Multiply(direction);
-
-				bool intersected = TraceRay(worldOrigin, worldDirection, hit, v);
-
-				if (intersected)
+				cols.clear();
+				for(int i = 0; i < Oversample; i ++)
 				{
-					cols.push_back(Illuminate(*hit, *v).Clamp());
+					decimal xOff = (-0.5 + decimal(rand()) / RAND_MAX) * xScale;
+					decimal yOff = (-0.5 + decimal(rand()) / RAND_MAX) * yScale;
+
+					auto c = TraceAndIlluminate(worldOrigin, origin, Vector(x + xOff, y + yOff, 0));
+					cols.push_back(c);
 				}
-				else
-				{
-					cols.push_back(Colour(0,0,0));
-				}
+
+				auto c = Colour::Average(cols);
+				output << (char)(c.r * 255);
+				output << (char)(c.g * 255);
+				output << (char)(c.b * 255);
+			}
+			else
+			{
+				auto c = TraceAndIlluminate(worldOrigin, origin, Vector(x, y, 0));
+				output << (char)(c.r * 255);
+				output << (char)(c.g * 255);
+				output << (char)(c.b * 255);
 			}
 
-			auto c = Colour::Average(cols);
-
-			output << (char)(c.r * 255);
-			output << (char)(c.g * 255);
-			output << (char)(c.b * 255);
 		}
+	}
+}
+
+Colour Engine::TraceAndIlluminate(const Vector& worldOrigin, const Vector& origin, const Vector& target)
+{
+	static std::shared_ptr<const IIntersectable> hit;
+	static std::shared_ptr<const Vector> v;
+
+	Vector direction = origin.Direction(target);
+
+	Vector worldDirection = m_View->Multiply(direction);
+
+	bool intersected = TraceRay(worldOrigin, worldDirection, hit, v);
+
+	if (intersected)
+	{
+		return (Illuminate(*hit, *v).Clamp());
+	}
+	else
+	{
+		return (Colour(0,0,0));
 	}
 }
 

@@ -7,7 +7,7 @@ AreaLight::~AreaLight( void )
 	m_objectMatrix.reset();
 }
 
-AreaLight::AreaLight( unsigned int w, unsigned int h, decimal fuzz ) : m_w(w), m_h(h), m_fuzz(fuzz)
+AreaLight::AreaLight( unsigned int w, unsigned int h, decimal fuzz) : m_w(w), m_h(h), m_fuzz(fuzz)
 {
 	m_objectMatrix.reset(new Matrix(Matrix::Identity()));
 }
@@ -34,7 +34,7 @@ std::vector<const Vector> AreaLight::Samples() const
 			decimal xBase = x - (m_w - 1) / 2;
 			decimal yBase = y - (m_h - 1) / 2;
 
-			Vector point( xBase + xOff, 0, yBase + yOff);
+			Vector point( xBase + (m_fuzz*xOff), 0, yBase + (m_fuzz * yOff));
 
 			points.push_back( m_objectMatrix->Multiply(point));
 		}

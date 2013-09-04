@@ -5,7 +5,7 @@
 
 void CheckSamplesAreCorrect()
 {
-	AreaLight l(3,3);
+	AreaLight l(3,3,0);
 
 	auto v = l.Samples();
 
