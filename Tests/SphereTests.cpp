@@ -37,10 +37,29 @@ void NormalTestUntransformed()
 	assert(n == Vector(0, 1, 0, 0));
 }
 
+void IntersectNormalTestTransformed()
+{
+	auto s = Sphere();
+	auto m = Matrix::Translate(Vector(0, -1, 0));
+	s.SetObjectMatrix(m);
+
+	decimal t;
+	Vector o(0, -1, -10);
+	Vector d(0, 0, 1);
+	s.Intersect(o, d, t);
+
+	auto i = o + (d * t);
+
+	auto n = s.Normal(i);
+
+	assert(WithinTolerance(n, Vector(0, 0, -1, 0)));
+}
+
 void SphereTests()
 {
 	IntersectTestUntransformed();
 	NormalTestUntransformed();
 
 	IntersectTestTransformed();
+	IntersectNormalTestTransformed();
 }

@@ -58,11 +58,12 @@ void CanIlluminate()
 	Engine e;
 	std::shared_ptr<Sphere> sphere(new Sphere());
 	sphere->SetColour(Colour(1.0, 1.0, 1.0));
+
 	e.AddObject(sphere);
 
 	std::shared_ptr<PointLight> light(new PointLight());
 	light->SetObjectMatrix(
-		Matrix::Translate(Vector(0, 10, -10))
+		Matrix::Translate(Vector(0, 10, -11))
 		);
 
 	e.AddLight(light);
@@ -74,7 +75,7 @@ void CanIlluminate()
 
 	auto c = e.Illuminate(*hit, *v);
 
-	assert(c.Luminance() == 1.0);
+	assert(WithinTolerance(c.Luminance(), 0.3 + (0.7 * sqrt(2.0)/2)));
 
 };
 

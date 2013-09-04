@@ -3,3 +3,7 @@ ipch/
 *.suo
 *.sdf
 *.opensdf
+Engine/Release/
+FuzzyTracer/Release/
+Release/
+FuzzyTracer/output.data
