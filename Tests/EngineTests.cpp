@@ -2,7 +2,7 @@
 
 #include "Engine.h"
 #include "Sphere.h"
-#include "TestHelpers.h"
+#include "Tolerance.h"
 #include "EngineTests.h"
 #include "PointLight.h"
 

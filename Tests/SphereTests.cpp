@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 #include "SphereTests.h"
-#include "TestHelpers.h"
+#include "Tolerance.h"
 
 #include "Sphere.h"
 

@@ -7,6 +7,7 @@
 #include "SphereTests.h"
 #include "EngineTests.h"
 #include "AreaLightTests.h"
+#include "PlaneTests.h"
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -15,6 +16,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	SphereTests();
 	EngineTests();
 	AreaLightTests();
+	PlaneTests();
 	return 0;
 }
 

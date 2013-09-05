@@ -36,10 +36,10 @@
     <ClInclude Include="EngineTests.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TestHelpers.h">
+    <ClInclude Include="AreaLightTests.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AreaLightTests.h">
+    <ClInclude Include="PlaneTests.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -62,10 +62,10 @@
     <ClCompile Include="EngineTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TestHelpers.cpp">
+    <ClCompile Include="AreaLightTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AreaLightTests.cpp">
+    <ClCompile Include="PlaneTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "AreaLight.h"
 #include "AreaLightTests.h"
-#include "TestHelpers.h"
+#include "Tolerance.h"
 
 void CheckSamplesAreCorrect()
 {

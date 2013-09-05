@@ -110,9 +110,11 @@ public:
 	static Mat4<T> Camera(const Vec4<T>& forward, const Vec4<T>& right, const Vec4<T>& up, const Vec4<T>& position)
 	{
 		auto m = Identity();
-		m._11 = right.x; m._21 = right.y; m._31 = right.z; m._41 = position.x;
-		m._12 = up.x; m._22 = up.y; m._32 = up.z; m._42 = position.y;
-		m._13 = forward.x; m._23 = forward.y; m._33 = forward.z; m._43 = position.z;
+		m._11 = right.x;    m._21 = up.x;       m._31 = forward.x; 
+		m._12 = right.y;    m._22 = up.y;       m._32 = forward.y;
+		m._13 = right.z;    m._23 = up.z;       m._33 = forward.z;
+
+		m._41 = position.x; m._42 = position.y; m._43 = position.z;
 		return m;
 	}
 
@@ -122,6 +124,8 @@ public:
 		auto tempUp = Vec4<T>(0.0, 1.0, 0.0, 0.0);
 		auto right = tempUp.CrossProduct(direction).Normalised();
 		auto up = direction.CrossProduct(right).Normalised();
+
+		auto transPos = Vector(-(right.DotProduct(position)), up.DotProduct(position), -(direction.DotProduct(position)));
 
 		return Camera(direction, right, up, position);
 	}

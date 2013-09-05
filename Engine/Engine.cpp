@@ -64,9 +64,9 @@ Colour Engine::TraceAndIlluminate(const Vector& worldOrigin, const Vector& origi
 	static std::shared_ptr<const IIntersectable> hit;
 	static std::shared_ptr<const Vector> v;
 
-	Vector direction = origin.Direction(target);
+	Vector worldTarget = m_View->Multiply(target);
 
-	Vector worldDirection = m_View->Multiply(direction);
+	Vector worldDirection = worldOrigin.Direction(worldTarget).Normalised();
 
 	bool intersected = TraceRay(worldOrigin, worldDirection, hit, v);
 

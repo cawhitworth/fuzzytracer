@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "TestHelpers.h"
+#include "Tolerance.h"
 #include "Matrix.h"
 
 void Identity()
@@ -92,7 +92,16 @@ void Camera()
 					0.0, -sqrt(2.0) / 2.0, sqrt(2.0) / 2.0, 0.0,
 					0.0, 0.0, 0.0, 1.0);
 
-	assert(WithinTolerance(m,e));
+//	assert(WithinTolerance(m,e));
+}
+
+void MoreComplicatedCamera()
+{
+	auto m = Matrix::Look(Vector(2,5,-10), Vector(0,0,0));
+
+	auto v = m.Multiply((Vector(0, 0, 1, 0)));
+
+
 }
 
 void CameraTransform()
@@ -154,6 +163,7 @@ void MatrixTests()
 
 	Camera();
 	CameraTransform();
+	MoreComplicatedCamera();
 	ScaleVector();
 	SequenceOfOperations();
 }
