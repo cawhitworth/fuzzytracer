@@ -3,6 +3,7 @@
 #include <math.h>
 #include <iostream>
 #include <vector>
+#include <thread>
 
 void Engine::SetViewMatrix(const Matrix& view)
 {
@@ -16,53 +17,36 @@ void Engine::TraceScene(std::ostream& output, std::function<void (decimal)> call
 	Vector origin(0, 0, -distance);
 	Vector worldOrigin = m_View->Multiply(origin);
 
-	std::vector<const Colour> cols;
+	unsigned char* image = new unsigned char[Width * Height * 3];
 
-	decimal yScale = decimal(2) / (Height - 1);
-	decimal xScale = decimal(2) / (Width - 1);
+	std::vector<std::thread> workers;
 
-	for(int pixelY = 0; pixelY < Height; pixelY++)
+	for(int pixelY = 0; pixelY < Height; pixelY+=Threads)
 	{
 		callback( decimal(pixelY * 100) / Height);
 
-		decimal y = 1 - pixelY * yScale;
-
-		for(int pixelX = 0; pixelX < Width; pixelX++)
+		for(int t = 0; t < Threads; t++)
 		{
-			decimal x = -1 + pixelX * xScale;
-			if (Oversample > 0)
-			{
-				cols.clear();
-				for(int i = 0; i < Oversample; i ++)
-				{
-					decimal xOff = (-0.5 + decimal(rand()) / RAND_MAX) * xScale;
-					decimal yOff = (-0.5 + decimal(rand()) / RAND_MAX) * yScale;
-
-					auto c = TraceAndIlluminate(worldOrigin, origin, Vector(x + xOff, y + yOff, 0));
-					cols.push_back(c);
-				}
-
-				auto c = Colour::Average(cols);
-				output << (char)(c.r * 255);
-				output << (char)(c.g * 255);
-				output << (char)(c.b * 255);
-			}
-			else
-			{
-				auto c = TraceAndIlluminate(worldOrigin, origin, Vector(x, y, 0));
-				output << (char)(c.r * 255);
-				output << (char)(c.g * 255);
-				output << (char)(c.b * 255);
-			}
-
+			if (pixelY + t < Height)
+				workers.push_back( std::thread( &Engine::RenderLine, this, pixelY+t, std::ref(worldOrigin), std::ref(origin), image) );
 		}
+
+		for(auto& t : workers)
+			t.join();
+
+		workers.clear();
+	}
+
+	for(int i = 0; i < Width * Height * 3; i++)
+	{
+		output << image[i];
 	}
 }
 
 Colour Engine::TraceAndIlluminate(const Vector& worldOrigin, const Vector& origin, const Vector& target)
 {
-	static std::shared_ptr<const IIntersectable> hit;
-	static std::shared_ptr<const Vector> v;
+	std::shared_ptr<const IIntersectable> hit;
+	std::shared_ptr<const Vector> v;
 
 	Vector worldTarget = m_View->Multiply(target);
 
@@ -122,7 +106,7 @@ bool Engine::TraceRay( const Vector& origin, const Vector& direction, std::share
 const Colour Engine::Illuminate(const IIntersectable& hitObject, const Vector& point) const
 {
 
-	decimal diffuse = 0.7, ambient = 0.3;
+	decimal diffuse = 0.85, ambient = 0.15;
 
 	std::shared_ptr<const IIntersectable> shadowObject;
 	std::shared_ptr<const Vector> shadowPoint;
@@ -162,4 +146,44 @@ const Colour Engine::Illuminate(const IIntersectable& hitObject, const Vector& p
 	}
 
 	return *diffuseColour + ambientColour;
+}
+
+void Engine::RenderLine( int pixelY, const Vector& worldOrigin, const Vector& origin, unsigned char* image )
+{
+	std::vector<const Colour> cols;
+	decimal yScale = decimal(2) / (Height - 1);
+	decimal xScale = decimal(2) / (Width - 1);
+	decimal y = 1 - pixelY * yScale;
+
+
+	for(int pixelX = 0; pixelX < Width; pixelX++)
+	{
+		decimal x = -1 + pixelX * xScale;
+		if (Oversample > 0)
+		{
+			cols.clear();
+			for(int i = 0; i < Oversample; i ++)
+			{
+				decimal xOff = (-0.5 + decimal(rand()) / RAND_MAX) * xScale;
+				decimal yOff = (-0.5 + decimal(rand()) / RAND_MAX) * yScale;
+
+				auto c = TraceAndIlluminate(worldOrigin, origin, Vector(x + xOff, y + yOff, 0));
+				cols.push_back(c);
+			}
+
+			auto c = Colour::Average(cols);
+			image[(pixelX + pixelY*Width) * 3] = c.r * 255;
+			image[(pixelX + pixelY*Width) * 3 + 1] = c.g * 255;
+			image[(pixelX + pixelY*Width) * 3 + 2] = c.b * 255;
+
+		}
+		else
+		{
+			auto c = TraceAndIlluminate(worldOrigin, origin, Vector(x, y, 0));
+			image[(pixelX + pixelY*Width) * 3] = c.r * 255;
+			image[(pixelX + pixelY*Width) * 3 + 1] = c.g * 255;
+			image[(pixelX + pixelY*Width) * 3 + 2] = c.b * 255;
+		}
+
+	}
 }

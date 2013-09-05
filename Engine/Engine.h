@@ -14,12 +14,15 @@ class Engine
 public:
 	unsigned int Oversample;
 	unsigned int Width, Height;
+	unsigned int Threads;
 	decimal HFov;
 
-	Engine() : Oversample(4), Width(640), Height(480), HFov(90) {}
+	Engine() : Oversample(4), Width(640), Height(480), HFov(90), Threads(1) {}
 
 	void SetViewMatrix(const Matrix&);
 	void TraceScene(std::ostream&, std::function<void (decimal)> callback);
+
+	void RenderLine( int pixelY, const Vector& worldOrigin, const Vector& origin, unsigned char* image );
 
 	void AddObject(std::shared_ptr<const IIntersectable> object);
 	void AddLight(std::shared_ptr<const ILight> light);
