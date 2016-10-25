@@ -22,12 +22,12 @@ public:
 	void SetViewMatrix(const Matrix&);
 	void TraceScene(std::ostream&, std::function<void (decimal)> callback);
 
-	void RenderLine( int pixelY, const Vector& worldOrigin, const Vector& origin, unsigned char* image );
+	void RenderLine( int pixelY, const Vector& worldOrigin, const Vector& origin, std::vector<unsigned char> image ) const;
 
 	void AddObject(std::shared_ptr<const IIntersectable> object);
 	void AddLight(std::shared_ptr<const ILight> light);
 
-	Colour Engine::TraceAndIlluminate(const Vector& worldOrigin, const Vector& origin, const Vector& target);
+	Colour Engine::TraceAndIlluminate(const Vector& worldOrigin, const Vector& origin, const Vector& target) const;
 	bool TraceRay(const Vector& origin, const Vector& direction, std::shared_ptr<const IIntersectable>& hit, std::shared_ptr<const Vector>& point) const;
 	Colour Illuminate(const IIntersectable& hitObject, const Vector& point) const;
 

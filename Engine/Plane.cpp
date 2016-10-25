@@ -35,12 +35,12 @@ bool Plane::Intersect( const Vector& rayOrigin, const Vector& rayDirection, deci
 	return true;
 }
 
-const Vector Plane::Normal( const Vector& intersectPoint ) const
+Vector Plane::Normal( const Vector& intersectPoint ) const
 {
 	return *m_normalVector;
 }
 
-const Colour Plane::ColourAt( const Vector& intersectPoint ) const
+Colour Plane::ColourAt( const Vector& intersectPoint ) const
 {
 	return *m_colour;
 }

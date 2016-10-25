@@ -125,8 +125,6 @@ public:
 		auto right = tempUp.CrossProduct(direction).Normalised();
 		auto up = direction.CrossProduct(right).Normalised();
 
-		auto transPos = Vector(-(right.DotProduct(position)), up.DotProduct(position), -(direction.DotProduct(position)));
-
 		return Camera(direction, right, up, position);
 	}
 
@@ -135,8 +133,8 @@ public:
 	{
 		Mat4<T> result;
 
-		for(int row = 0; row < 4; row ++)
-			for(int column = 0; column < 4; column ++)
+		for(auto row = 0; row < 4; row ++)
+			for(auto column = 0; column < 4; column ++)
 			{
 				result._m[row][column] = 
 					_m[row][0] * rhs._m[0][column] +
@@ -151,7 +149,7 @@ public:
 	Vec4<T> Multiply(const Vec4<T>& rhs) const
 	{
 		T r[4];
-		for(int row = 0; row < 4; row++)
+		for(auto row = 0; row < 4; row++)
 		{
 			r[row] = _m[row][0] * rhs.x +
 					 _m[row][1] * rhs.y +

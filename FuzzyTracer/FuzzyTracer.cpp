@@ -16,7 +16,7 @@
 int _tmain(int argc, _TCHAR* argv[])
  {
 	Engine e;
-	Matrix view = Matrix::Look( Vector(-6.3, 8.3, -8.7), Vector(0, 0, 0, 0));
+	auto view = Matrix::Look( Vector(-6.3, 8.3, -8.7), Vector(0, 0, 0, 0));
 	e.SetViewMatrix(view);
 	decimal r = 0, g = 0, b = 0;
 	for(decimal z = -4; z <= 4; z+=2)
@@ -36,21 +36,13 @@ int _tmain(int argc, _TCHAR* argv[])
 		g = 0; b += 0.2;
 	}
 
-	/*
-	std::shared_ptr<Sphere> sphere(new Sphere());
-	sphere->SetObjectMatrix( Matrix::Translate(Vector(0, 0, 0)));
-	sphere->SetColour(Colour(1, 1, 1));
-	e.AddObject(sphere);*/
-
-
-	std::shared_ptr<Plane> plane(new Plane());
-	plane->SetObjectMatrix( Matrix::Translate(Vector(0, -5, 0)));
+    auto plane = std::make_shared<Plane>();
+	
+    plane->SetObjectMatrix( Matrix::Translate(Vector(0, -5, 0)));
 	plane->SetColour(Colour(1,1,1));
 	e.AddObject(plane);
 
-//	std::shared_ptr<PointLight> light(new PointLight()); 
-
-	std::shared_ptr<AreaLight> light(new AreaLight(3,3));
+    auto light = std::make_shared<AreaLight>(3, 3);
 	light->SetObjectMatrix(
 		Matrix::Translate(Vector(-50, 200, 10)).Multiply(
 		Matrix::Scale(Vector(3, 0, 3)))

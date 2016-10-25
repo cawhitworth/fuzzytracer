@@ -14,10 +14,10 @@ void Engine::TraceScene(std::ostream& output, std::function<void (decimal)> call
 {
 	decimal distance = 1.0 / (tan(HFov / 2.0));
 
-	Vector origin(0, 0, -distance);
-	Vector worldOrigin = m_View->Multiply(origin);
+	const Vector origin(0, 0, -distance);
+	const auto worldOrigin = m_View->Multiply(origin);
 
-	unsigned char* image = new unsigned char[Width * Height * 3];
+    std::vector<unsigned char> image(Width * Height * 3);
 
 	std::vector<std::thread> workers;
 
@@ -37,31 +37,29 @@ void Engine::TraceScene(std::ostream& output, std::function<void (decimal)> call
 		workers.clear();
 	}
 
-	for(int i = 0; i < Width * Height * 3; i++)
+	for(auto i : image)
 	{
 		output << image[i];
 	}
 }
 
-Colour Engine::TraceAndIlluminate(const Vector& worldOrigin, const Vector& origin, const Vector& target)
+Colour Engine::TraceAndIlluminate(const Vector& worldOrigin, const Vector& origin, const Vector& target) const
 {
 	std::shared_ptr<const IIntersectable> hit;
 	std::shared_ptr<const Vector> v;
 
-	Vector worldTarget = m_View->Multiply(target);
+	auto worldTarget = m_View->Multiply(target);
 
-	Vector worldDirection = worldOrigin.Direction(worldTarget).Normalised();
+	auto worldDirection = worldOrigin.Direction(worldTarget).Normalised();
 
-	bool intersected = TraceRay(worldOrigin, worldDirection, hit, v);
+	auto intersected = TraceRay(worldOrigin, worldDirection, hit, v);
 
 	if (intersected)
 	{
-		return (Illuminate(*hit, *v).Clamp());
+		return Illuminate(*hit, *v).Clamp();
 	}
-	else
-	{
-		return (Colour(0,0,0));
-	}
+
+    return Colour(0, 0, 0);
 }
 
 void Engine::AddObject(std::shared_ptr<const IIntersectable> object)
@@ -78,12 +76,12 @@ bool Engine::TraceRay( const Vector& origin, const Vector& direction, std::share
 {
 	std::shared_ptr<const IIntersectable> minObj;
 	decimal minT = 0;
-	for(std::shared_ptr<const IIntersectable> o : m_objects)
+	for(auto o : m_objects)
 	{
 		decimal t;
 		if (o->Intersect(origin, direction,t))
 		{
-			if (t < minT || minObj.get() == NULL)
+			if (t < minT || minObj.get() == nullptr)
 			{
 				minT = t;
 				minObj = o;
@@ -91,7 +89,7 @@ bool Engine::TraceRay( const Vector& origin, const Vector& direction, std::share
 		}
 	}
 
-	if (minObj != NULL)
+	if (minObj != nullptr)
 	{
 		hit = minObj;
 		const Vector* v = new Vector(origin + (direction * minT));
@@ -114,7 +112,8 @@ Colour Engine::Illuminate(const IIntersectable& hitObject, const Vector& point) 
 	auto pointColour = hitObject.ColourAt(point);
 
 	auto ambientColour = Colour(ambient, ambient, ambient).Multiply(pointColour);
-	std::shared_ptr<const Colour> diffuseColour(new Colour(0,0,0));
+	
+    auto diffuseColour = std::make_shared<const Colour>(0, 0, 0);
 
 	for(auto l : m_lights)
 	{
@@ -133,9 +132,9 @@ Colour Engine::Illuminate(const IIntersectable& hitObject, const Vector& point) 
 
 				auto power = CLAMP(cosTheta * diffuse);
 
-				auto diffuseColour = l->GetColour().Multiply(power);
+				auto diffuseLightColour = l->GetColour().Multiply(power);
 
-				auto c = pointColour.Multiply(diffuseColour).Clamp();
+				auto c = pointColour.Multiply(diffuseLightColour).Clamp();
 
 				diffuseColours.push_back(c);
 			}
@@ -148,7 +147,7 @@ Colour Engine::Illuminate(const IIntersectable& hitObject, const Vector& point) 
 	return *diffuseColour + ambientColour;
 }
 
-void Engine::RenderLine( int pixelY, const Vector& worldOrigin, const Vector& origin, unsigned char* image )
+void Engine::RenderLine( int pixelY, const Vector& worldOrigin, const Vector& origin, std::vector<unsigned char> image ) const
 {
 	std::vector<Colour> cols;
 	decimal yScale = decimal(2) / (Height - 1);
@@ -156,13 +155,13 @@ void Engine::RenderLine( int pixelY, const Vector& worldOrigin, const Vector& or
 	decimal y = 1 - pixelY * yScale;
 
 
-	for(int pixelX = 0; pixelX < Width; pixelX++)
+	for(auto pixelX = 0; pixelX < Width; pixelX++)
 	{
 		decimal x = -1 + pixelX * xScale;
 		if (Oversample > 0)
 		{
 			cols.clear();
-			for(int i = 0; i < Oversample; i ++)
+			for(auto i = 0; i < Oversample; i ++)
 			{
 				decimal xOff = (-0.5 + decimal(rand()) / RAND_MAX) * xScale;
 				decimal yOff = (-0.5 + decimal(rand()) / RAND_MAX) * yScale;

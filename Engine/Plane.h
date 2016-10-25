@@ -14,12 +14,12 @@ public:
 
 	void SetColour(const Colour& col);
 
-	bool Intersect(const Vector& rayOrigin, const Vector& rayDirection, decimal& t) const;
-	const Vector Normal(const Vector& intersectPoint) const;
-	const Colour ColourAt(const Vector& intersectPoint) const;
+	bool Intersect(const Vector& rayOrigin, const Vector& rayDirection, decimal& t) const override;
+	Vector Normal(const Vector& intersectPoint) const override;
+	Colour ColourAt(const Vector& intersectPoint) const override;
 
-	const Matrix& GetObjectMatrix() const;
-	void SetObjectMatrix(const Matrix&);
+	const Matrix& GetObjectMatrix() const override;
+	void SetObjectMatrix(const Matrix&) override;
 
 private:
 	std::shared_ptr<const Matrix> m_objectMatrix;

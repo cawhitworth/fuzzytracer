@@ -14,12 +14,12 @@ public:
 
 	virtual ~AreaLight(void);
 
-	const Matrix& GetObjectMatrix() const;
-	void SetObjectMatrix(const Matrix& m);
+	const Matrix& GetObjectMatrix() const override;
+	void SetObjectMatrix(const Matrix& m) override;
 
 	void SetColour(const Colour& col) { m_colour.reset(new Colour(col)); }
 	const Colour& GetColour() const { return *m_colour; }
-	std::vector<Vector> Samples() const;
+	std::vector<Vector> Samples() const override;
 
 private:
 	const decimal m_fuzz;

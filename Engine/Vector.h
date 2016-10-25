@@ -28,7 +28,7 @@ public:
 		return r;
 	}
 
-	const T Magnitude() const
+    T Magnitude() const
 	{
 		return sqrt(DotProduct(*this));
 	}

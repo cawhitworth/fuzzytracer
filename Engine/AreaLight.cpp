@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "AreaLight.h"
-#include <math.h>
 
 AreaLight::AreaLight( unsigned int w, unsigned int h, decimal fuzz) : m_w(w), m_h(h), m_fuzz(fuzz)
 {

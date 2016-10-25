@@ -73,13 +73,13 @@ bool Sphere::Intersect( const Vector& rayOrigin, const Vector& rayDirection, dec
 	return true;
 }
 
-const Vector Sphere::Normal( const Vector& intersectPoint ) const
+Vector Sphere::Normal( const Vector& intersectPoint ) const
 {
 	auto v = m_objectMatrixInverse->Multiply(intersectPoint);
 	return Vector(v.x, v.y, v.z, 0).Normalised();
 }
 
-const Colour Sphere::ColourAt(const Vector& intersectPoint) const
+Colour Sphere::ColourAt(const Vector& intersectPoint) const
 {
 	return *m_colour;
 }
