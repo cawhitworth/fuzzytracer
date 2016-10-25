@@ -10,7 +10,7 @@ void Engine::SetViewMatrix(const Matrix& view)
 	m_View.reset(new Matrix(view));
 }
 
-void Engine::TraceScene(std::ostream& output, std::function<void (decimal)> callback)
+std::vector<unsigned char> Engine::TraceScene(std::function<void (decimal)> callback)
 {
 	decimal distance = 1.0 / (tan(HFov / 2.0));
 
@@ -28,7 +28,7 @@ void Engine::TraceScene(std::ostream& output, std::function<void (decimal)> call
 		for(int t = 0; t < Threads; t++)
 		{
 			if (pixelY + t < Height)
-				workers.push_back( std::thread( &Engine::RenderLine, this, pixelY+t, std::ref(worldOrigin), std::ref(origin), image) );
+				workers.push_back( std::thread( &Engine::RenderLine, this, pixelY+t, std::ref(worldOrigin), std::ref(origin), &image[0]) );
 		}
 
 		for(auto& t : workers)
@@ -37,10 +37,7 @@ void Engine::TraceScene(std::ostream& output, std::function<void (decimal)> call
 		workers.clear();
 	}
 
-	for(auto i : image)
-	{
-		output << image[i];
-	}
+    return image;
 }
 
 Colour Engine::TraceAndIlluminate(const Vector& worldOrigin, const Vector& origin, const Vector& target) const
@@ -147,7 +144,7 @@ Colour Engine::Illuminate(const IIntersectable& hitObject, const Vector& point) 
 	return *diffuseColour + ambientColour;
 }
 
-void Engine::RenderLine( int pixelY, const Vector& worldOrigin, const Vector& origin, std::vector<unsigned char> image ) const
+void Engine::RenderLine( int pixelY, const Vector& worldOrigin, const Vector& origin, unsigned char* image ) const
 {
 	std::vector<Colour> cols;
 	decimal yScale = decimal(2) / (Height - 1);

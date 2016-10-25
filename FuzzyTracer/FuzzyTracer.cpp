@@ -12,6 +12,7 @@
 #include "Plane.h"
 #include "AreaLight.h"
 #include "PointLight.h"
+#include "lodepng.h"
 
 int _tmain(int argc, _TCHAR* argv[])
  {
@@ -58,12 +59,15 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	auto t = clock();
 
-	std::ofstream output("output.raw", std::ios_base::binary);
-	e.TraceScene(output, [](decimal p) { std::cout << p << "%" << std::endl; } );
+	auto output = e.TraceScene([](decimal p) { std::cout << p << "%" << std::endl; } );
 
 	t = clock() - t;
 	
 	std::cout << "Finished in " << (decimal(t) / CLOCKS_PER_SEC) << " seconds" << std::endl;
+
+    auto err = lodepng::encode("output.png", output, e.Width, e.Height, LCT_RGB);
+    
+    std::cout << "Written: " << err << std::endl;
 
 	return 0;
 }

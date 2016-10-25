@@ -20,9 +20,9 @@ public:
 	Engine() : Oversample(4), Width(640), Height(480), HFov(90), Threads(1) {}
 
 	void SetViewMatrix(const Matrix&);
-	void TraceScene(std::ostream&, std::function<void (decimal)> callback);
+	std::vector<unsigned char> TraceScene(std::function<void (decimal)> callback);
 
-	void RenderLine( int pixelY, const Vector& worldOrigin, const Vector& origin, std::vector<unsigned char> image ) const;
+	void RenderLine( int pixelY, const Vector& worldOrigin, const Vector& origin, unsigned char* image ) const;
 
 	void AddObject(std::shared_ptr<const IIntersectable> object);
 	void AddLight(std::shared_ptr<const ILight> light);
