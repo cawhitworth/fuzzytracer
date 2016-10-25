@@ -10,5 +10,5 @@ public:
     virtual ~ILight() {}
 
     virtual const Colour& GetColour() const = 0; 
-	virtual std::vector<Vector> Samples() const = 0;
+    virtual std::vector<Vector> Samples() const = 0;
 };
