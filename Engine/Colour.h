@@ -15,38 +15,38 @@ public:
 	Col<T>(T r, T g, T b) : r(r), g(g), b(b) {}
 	Col<T>(const Col<T>& rhs) : r(rhs.r), g(rhs.g), b(rhs.b) {}
 
-	const Col<T> Multiply(const Col<T>& col) const
+	Col<T> Multiply(const Col<T>& col) const
 	{
 		return Col<T>(r * col.r, g * col.g, b * col.b);
 	}
 
-	const Col<T> Multiply(T scale) const
+	Col<T> Multiply(T scale) const
 	{
 		return Col<T>(r * scale, g * scale, b * scale);
 	}
 
-	const Col<T> Clamp() const
+	Col<T> Clamp() const
 	{
 		return Col<T>(CLAMP(r), CLAMP(g), CLAMP(b));
 	}
 
-	const T Luminance() const
+	T Luminance() const
 	{
 		return (r + g + b) / 3.0;
 	}
 
-	static const Col<T> Average(std::vector<const Col<T> > cols);
+	static Col<T> Average(std::vector<Col<T> > cols);
 
 };
 
 template<typename T>
-const Col<T> operator+(const Col<T>& lhs, const Col<T>& rhs)
+Col<T> operator+(const Col<T>& lhs, const Col<T>& rhs)
 {
 	return Col<T>(lhs.r + rhs.r, lhs.g + rhs.g, lhs.b + rhs.b).Clamp();
 }
 
 template<typename T>
-const Col<T> Col<T>::Average(std::vector<const Col<T> > cols)
+Col<T> Col<T>::Average(std::vector<Col<T> > cols)
 {
 	if (cols.size() == 1)
 		return cols[0];

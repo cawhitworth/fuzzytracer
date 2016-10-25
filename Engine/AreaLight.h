@@ -19,7 +19,7 @@ public:
 
 	void SetColour(const Colour& col) { m_colour.reset(new Colour(col)); }
 	const Colour& GetColour() const { return *m_colour; }
-	std::vector<const Vector> Samples() const;
+	std::vector<Vector> Samples() const;
 
 private:
 	const decimal m_fuzz;

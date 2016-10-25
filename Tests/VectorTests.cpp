@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Vector.h"
+#include <cmath>
 
 #define TOLERANCE 0.001
 

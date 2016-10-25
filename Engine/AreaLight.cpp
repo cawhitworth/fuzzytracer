@@ -25,9 +25,9 @@ void AreaLight::SetObjectMatrix( const Matrix& m )
 	m_objectMatrix.reset(new Matrix(m));
 }
 
-std::vector<const Vector> AreaLight::Samples() const
+std::vector<Vector> AreaLight::Samples() const
 {
-	std::vector<const Vector> points;
+	std::vector<Vector> points;
 	for(decimal x = 0 ; x < m_w; x++)
 	{
 		for(decimal y= 0; y< m_h; y++)

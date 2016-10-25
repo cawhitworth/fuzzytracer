@@ -28,7 +28,7 @@ void PointLight::SetObjectMatrix( const Matrix& m)
 	m_point.push_back(p);
 }
 
-std::vector<const Vector> PointLight::Samples() const
+std::vector<Vector> PointLight::Samples() const
 {
 	return m_point;
 }

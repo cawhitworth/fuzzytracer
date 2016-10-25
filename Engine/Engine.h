@@ -29,7 +29,7 @@ public:
 
 	Colour Engine::TraceAndIlluminate(const Vector& worldOrigin, const Vector& origin, const Vector& target);
 	bool TraceRay(const Vector& origin, const Vector& direction, std::shared_ptr<const IIntersectable>& hit, std::shared_ptr<const Vector>& point) const;
-	const Colour Illuminate(const IIntersectable& hitObject, const Vector& point) const;
+	Colour Illuminate(const IIntersectable& hitObject, const Vector& point) const;
 
 
 private:

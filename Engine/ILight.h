@@ -8,5 +8,5 @@ class ILight
 {
 public:
 	virtual const Colour& GetColour() const = 0; 
-	virtual std::vector<const Vector> Samples() const = 0;
+	virtual std::vector<Vector> Samples() const = 0;
 };

@@ -1,6 +1,11 @@
+#pragma once
+
+#include <cmath>
+
 #include "Utilities.h"
 #include "Vector.h"
 #include "Matrix.h"
+
 
 #define TOLERANCE 0.00001
 

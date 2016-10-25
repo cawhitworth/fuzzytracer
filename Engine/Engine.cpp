@@ -103,7 +103,7 @@ bool Engine::TraceRay( const Vector& origin, const Vector& direction, std::share
 	return false;
 }
 
-const Colour Engine::Illuminate(const IIntersectable& hitObject, const Vector& point) const
+Colour Engine::Illuminate(const IIntersectable& hitObject, const Vector& point) const
 {
 
 	decimal diffuse = 0.85, ambient = 0.15;
@@ -118,7 +118,7 @@ const Colour Engine::Illuminate(const IIntersectable& hitObject, const Vector& p
 
 	for(auto l : m_lights)
 	{
-		std::vector<const Colour> diffuseColours;
+		std::vector<Colour> diffuseColours;
 		for(auto s : l->Samples())
 		{
 			auto direction = s.Direction(point).Normalised();
@@ -150,7 +150,7 @@ const Colour Engine::Illuminate(const IIntersectable& hitObject, const Vector& p
 
 void Engine::RenderLine( int pixelY, const Vector& worldOrigin, const Vector& origin, unsigned char* image )
 {
-	std::vector<const Colour> cols;
+	std::vector<Colour> cols;
 	decimal yScale = decimal(2) / (Height - 1);
 	decimal xScale = decimal(2) / (Width - 1);
 	decimal y = 1 - pixelY * yScale;
