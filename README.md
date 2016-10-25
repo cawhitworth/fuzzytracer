@@ -45,7 +45,13 @@ feels like a bad code smell to me now.*
 
 ###Monte-Carlo tracing
 
-Soft shadows, fuzzy reflections and all that other pretty stuff.
+Soft shadows, fuzzy reflections and all that other pretty stuff. The example
+above uses an area light with 16x16 samples per illumination calculation;
+the example below is the same scene with 3x3 samples:
+
+![Small, lower-quality example](https://raw.githubusercontent.com/cawhitworth/fuzzytracer/master/Examples/colourcube_lo.png)
+
+(both examples use 16x oversampling)
 
 ###Tests
 

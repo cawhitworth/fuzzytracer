@@ -43,12 +43,12 @@ int _tmain(int argc, _TCHAR* argv[])
 	plane->SetColour(Colour(1,1,1));
 	e.AddObject(plane);
 
-    auto light = std::make_shared<AreaLight>(3, 3);
+    auto light = std::make_shared<AreaLight>(16, 16);
 	light->SetObjectMatrix(
-		Matrix::Translate(Vector(-50, 200, 10)).Multiply(
-		Matrix::Scale(Vector(3, 0, 3)))
+		Matrix::Translate(Vector(-100, 400, 10)).Multiply(
+		Matrix::Scale(Vector(8, 0, 8)))
 		);
-	light->SetColour(Colour(1.0, 1.0, 0.97));
+	light->SetColour(Colour(1.0, 1.0,  0.97));
 	e.AddLight(light);
 
 	e.Width = 640;
