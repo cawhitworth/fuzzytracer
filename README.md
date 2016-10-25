@@ -40,7 +40,8 @@ a mixture of `const Immutable&` and `std::shared_ptr<const Immutable>`
 depending on what I'm trying to do. Also, the Matrix class is still mutable,
 which makes me a little sad).
 
-*2016 note: I'd have been better using move semantics here, I think.*
+*2016 note: I'd have been better using move semantics here, I think. Copy-assign
+feels like a bad code smell to me now.*
 
 ###Monte-Carlo tracing
 
