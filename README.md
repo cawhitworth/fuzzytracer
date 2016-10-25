@@ -1,6 +1,6 @@
 #FuzzyTracer
 
-![Small example](https://raw.githubusercontent.com/cawhitworth/fuzzytracer/master/Examples/colourcude.png)
+![Small example](https://raw.githubusercontent.com/cawhitworth/fuzzytracer/master/Examples/colourcube.png)
 
 Every so often, I get the urge to write yet another raytracer. This is my 2013
 effort.
