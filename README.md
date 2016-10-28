@@ -5,10 +5,6 @@
 Every so often, I get the urge to write yet another raytracer. This is my 2013
 effort.
 
-*2016 note: there's a number of things about this that aren't great. At some
-point I should go through the code and make it more idiomatic and less
-pointer-y*
-
 ##Why another one?
 
 This is pretty much entirely an intellectual exercise, it's not designed to be
@@ -23,9 +19,6 @@ of years, I've been writing C#, and C++11 has emerged in that time. I thought
 it was worth picking it up and finding out what's new, what's good and what's
 not so good.
 
-*2016 note: I'm not sure all of my decisions were the best, especially as the
-C++1x support in VS2013 was a bit patchy in places. Especially...*
-
 ###Immutable classes
 
 One of the things that I've come to love from F# is the immutable-by-default
@@ -39,9 +32,6 @@ pretty close. Passing things around has got a bit messy and I'm ending up with
 a mixture of `const Immutable&` and `std::shared_ptr<const Immutable>`
 depending on what I'm trying to do. Also, the Matrix class is still mutable,
 which makes me a little sad).
-
-*2016 note: I'd have been better using move semantics here, I think. Copy-assign
-feels like a bad code smell to me now.*
 
 ###Monte-Carlo tracing
 
