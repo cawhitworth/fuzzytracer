@@ -2,8 +2,8 @@
 
 ![Small example](https://raw.githubusercontent.com/cawhitworth/fuzzytracer/master/Examples/colourcube.png)
 
-Every so often, I get the urge to write yet another raytracer. This is my 2013
-effort.
+Every so often, I get the urge to write yet another raytracer. This is my latest
+effort (started in/mostly dating from 2013).
 
 ##Why another one?
 
